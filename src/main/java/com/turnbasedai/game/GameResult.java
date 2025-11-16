@@ -8,4 +8,12 @@ public class GameResult {
         this.isOver = isOver;
         this.Winner = Winner;
     }
+
+    public String isOver(){
+        return isOver;
+    }
+
+    public String Winner(){
+        return Winner;
+    }
 }

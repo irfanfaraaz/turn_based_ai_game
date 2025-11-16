@@ -2,6 +2,7 @@ package com.turnbasedai.api;
 
 import com.turnbasedai.boards.TicTacToeBoard;
 import com.turnbasedai.game.Board;
+import com.turnbasedai.game.Cell;
 import com.turnbasedai.game.GameResult;
 import com.turnbasedai.game.Move;
 import com.turnbasedai.game.Player;
@@ -36,14 +37,17 @@ public class GameEngine {
         if (board instanceof TicTacToeBoard){
             TicTacToeBoard board1 = (TicTacToeBoard) board;
             for (int i = 0; i < 3; i++){
-                 rowComplete = true;
-                 firstCell = board1.getCell(i, 0);
-                for (int j = i; j < 3; j++){
-                    if (!firstCell.equals(board1.getCell(i, j))){
-                        rowComplete = false;
-                        break;
-                    }else{
+                firstCell = board1.getCell(i, 0);
+                rowComplete = firstCell !=null;
+                if (firstCell !=null){
 
+                    for (int j = i; j < 3; j++){
+                        if (!firstCell.equals(board1.getCell(i, j))){
+                            rowComplete = false;
+                            break;
+                        }else{
+    
+                        }
                     }
                 }
                 if (rowComplete){
@@ -51,41 +55,48 @@ public class GameEngine {
                 }
             }
             for (int i = 0; i < 3; i++){
-                 columnComplete = true;
                  firstCell = board1.getCell(0, i);
-                for (int j = i; j < 3; j++){
-                    if (!firstCell.equals(board1.getCell(j, i))){
-                        columnComplete = false;
-                        break;
-                    }else{
+                 columnComplete = firstCell !=null;
+                 if (firstCell !=null){
+                    for (int j = i; j < 3; j++){
+                        if (!firstCell.equals(board1.getCell(j, i))){
+                            columnComplete = false;
+                            break;
+                        }else{
+                        }
                     }
-                }
-                if (columnComplete){
-                    return new GameResult("true", firstCell);
+                    if (columnComplete){
+                        return new GameResult("true", firstCell);
+                    }
+                 
                 }
             }
             for (int i = 0; i < 3; i++){
-                 diagonalComplete = true;
                  firstCell = board1.getCell(i, i);
-                for (int j = i; j < 3; j++){
+                 diagonalComplete = firstCell !=null;
+                 if (firstCell !=null){
+                    for (int j = i; j < 3; j++){
                     if (!firstCell.equals(board1.getCell(j, j))){
                         diagonalComplete = false;
                         break;
                     }else{
                     }
                 }
+                }
                 if (diagonalComplete){
                     return new GameResult("true", firstCell);
                 }
             }
             for (int i = 0; i < 3; i++){
-                 reverseDiagonalComplete = true;
                  firstCell = board1.getCell(i, 2-i);
+                 reverseDiagonalComplete = firstCell !=null;
+                 if (firstCell !=null){
                 for (int j = i; j < 3; j++){
                     if (!firstCell.equals(board1.getCell(j, 2-j))){
                         reverseDiagonalComplete = false;
                         break;
                     }else{
+                    }
                     }
                 }
                 if (reverseDiagonalComplete){
@@ -108,5 +119,22 @@ public class GameEngine {
             }
         }
         return new GameResult("false", "-");
+    }
+
+    public Move suggestMove(Player computer, Board board) {
+      if (board instanceof TicTacToeBoard){
+        TicTacToeBoard board1 = (TicTacToeBoard) board;
+        for (int i = 0; i < 3; i++){
+            for (int j = 0; j < 3; j++){
+                if (board1.getCell(i, j) == null){
+                    return new Move(new Cell(i, j));
+                }
+            }
+        }
+        throw new IllegalArgumentException("No empty cells found");
+      }
+      else{
+        throw new IllegalArgumentException("Invalid board type");
+      }
     }
 }
