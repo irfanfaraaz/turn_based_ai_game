@@ -1,10 +1,10 @@
 package com.turnbasedai.game;
 
-public class GameResult {
+public class GameState {
     String isOver = "";
     String Winner = "";
 
-    public GameResult(String isOver, String Winner){
+    public GameState(String isOver, String Winner){
         this.isOver = isOver;
         this.Winner = Winner;
     }
